@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>웹푸시 알람 테스트</title>
+</head>
+<body>
+    <h1>웹푸시 알람 테스트 페이지</h1>
+    <button id="notifyBtn">알람 보내기</button>
+
+    <script>
+        function requestPermission() {
+            Notification.requestPermission().then(permission => {
+                console.log('권한 상태:', permission);
+                if (permission === 'granted') {
+                    document.getElementById('notifyBtn').disabled = false;
+                } else {
+                    alert('알림 권한이 거부되었습니다.');
+                }
+            });
+        }
+
+        function sendNotification() {
+            new Notification("📢 알림입니다!", {
+                body: "이것은 테스트 알림입니다.",
+                icon: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+            });
+        }
+
+        window.onload = function() {
+            if (Notification.permission === 'granted') {
+                document.getElementById('notifyBtn').disabled = false;
+            } else if (Notification.permission !== 'denied') {
+                requestPermission();
+            } else {
+                alert('이미 권한이 거부되었습니다.');
+            }
+        };
+
+        document.getElementById('notifyBtn').addEventListener('click', sendNotification);
+    </script>
+</body>
+</html>
